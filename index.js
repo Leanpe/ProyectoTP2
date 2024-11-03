@@ -1,16 +1,18 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import routes from "./routes/routes.js";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(express.json()); // Para parsear el cuerpo de las solicitudes JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Rutas
-app.get("/", (req, res) => {
-  res.send("¡Bienvenido a mi API!");
-});
+app.use("/app", routes);
+
+// app.get("/", (req, res) => {
+//   res.send("¡Bienvenido a mi API!");
+// });
 
 // Iniciar el servidor
 app.listen(PORT, () => {
