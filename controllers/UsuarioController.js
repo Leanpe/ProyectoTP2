@@ -3,29 +3,29 @@ import UsuarioService from "../services/UsuarioService.js";
 class UsuarioController {
   usuarioService = new UsuarioService();
 
-  getAllUsers = async (req, res) => {
+  getAllUsuarios = async (req, res) => {
     try {
-      const data = await this.usuarioService.getAllUsersService();
+      const data = await this.usuarioService.getAllUsuariosService();
       res.status(200).send({ success: true, message: data });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
     }
   };
 
-  getUserById = async (req, res) => {
+  getUsuarioById = async (req, res) => {
     try {
       const { id } = req.params;
-      const data = await this.usuarioService.getUserByIdService(id);
+      const data = await this.usuarioService.getUsuarioById(id);
       res.status(200).send({ success: true, message: data });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
     }
   };
 
-  createUser = async (req, res, next) => {
+  createUsuario = async (req, res, next) => {
     try {
       const { name, mail, pass } = req.body;
-      const data = await this.usuarioService.createUserService({
+      const data = await this.usuarioService.createUsuarioService({
         name,
         mail,
         pass,
@@ -36,12 +36,12 @@ class UsuarioController {
     }
   };
 
-  updateUser = async (req, res) => {
+  updateUsuario = async (req, res) => {
     try {
       const { name, pass, mail } = req.body;
       console.log(`🚀 ~ UserController ~ updateUser= ~ pass:`, pass);
       const { id } = req.params;
-      const data = await this.usuarioService.updateUserService({
+      const data = await this.usuarioService.updateUsuarioService({
         id,
         name,
         pass,
@@ -53,10 +53,10 @@ class UsuarioController {
     }
   };
 
-  deleteUser = async (req, res) => {
+  deleteUsuario = async (req, res) => {
     try {
       const { id } = req.params;
-      const data = await this.usuarioService.deleteUserService(id);
+      const data = await this.usuarioService.deleteUsuarioService(id);
       res.status(200).send({ success: true, message: data });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
@@ -64,4 +64,4 @@ class UsuarioController {
   };
 }
 
-export default UserController;
+export default UsuarioController;
