@@ -15,41 +15,46 @@ class UsuarioController {
   getUsuarioById = async (req, res) => {
     try {
       const { id } = req.params;
-      const data = await this.usuarioService.getUsuarioById(id);
+      const data = await this.usuarioService.getUsuariosByIdService(id);
       res.status(200).send({ success: true, message: data });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
     }
   };
 
-  createUsuario = async (req, res, next) => {
+  createUsuario = async (req, res) => {
     try {
-      const { name, mail, pass } = req.body;
+      const { nombre, email, password } = req.body;
       const data = await this.usuarioService.createUsuarioService({
-        name,
-        mail,
-        pass,
+        nombre,
+        email,
+        password,
       });
       res.status(200).send({ success: true, message: data });
     } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(400).send({
+          success: false,
+          message: "El correo electrónico ya está registrado.",
+        });
+      }
       res.status(400).send({ success: false, message: error.message });
     }
   };
 
   updateUsuario = async (req, res) => {
     try {
-      const { name, pass, mail } = req.body;
-      console.log(`🚀 ~ UserController ~ updateUser= ~ pass:`, pass);
+      const { nombre, password, email } = req.body; // Usamos los nombres correctos
       const { id } = req.params;
       const data = await this.usuarioService.updateUsuarioService({
         id,
-        name,
-        pass,
-        mail,
+        nombre,
+        password,
+        email,
       });
       res.status(200).send({ success: true, message: data });
     } catch (error) {
-      res.status(400).send({ success: false, message: error.message });
+      res.status(400).send({ success: false, message: error });
     }
   };
 
