@@ -1,8 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import connection from "../connection/connection.js";
-import bcrypt from "bcrypt";
+import bcrypt, { hash } from "bcrypt";
 
-class Usuario extends Model {}
+class Usuario extends Model {
+  compare = async (password) => {
+    const data = await bcrypt.compare(password, this.password);
+    return data;
+  };
+}
 
 Usuario.init(
   {

@@ -1,10 +1,11 @@
 import { Usuario } from "../models/models.js";
+import { genToken, verificarToken } from "../utils/token.js";
 
 class UsuarioService {
   getAllUsuariosService = async () => {
     try {
       const usuarios = await Usuario.findAll({
-        attributes: ["name", "mail"],
+        attributes: ["nombre", "email"],
       });
       return usuarios;
     } catch (error) {
@@ -16,7 +17,7 @@ class UsuarioService {
     try {
       const usuarios = await Usuario.findAll({
         where: { id },
-        attributes: ["name", "mail"],
+        attributes: ["nombre", "email"],
       });
       return usuarios;
     } catch (error) {
@@ -35,9 +36,9 @@ class UsuarioService {
 
   updateUsuarioService = async (data) => {
     try {
-      const { id, name, pass, mail } = data;
+      const { id, nombre, password, email } = data;
       const usuarios = await Usuario.update(
-        { name, pass, mail },
+        { nombre, password, email },
         {
           where: { id },
         }
@@ -67,18 +68,32 @@ class UsuarioService {
     }
   };
 
-  loginService = async (user) => {
+  loginService = async (usuario) => {
     try {
-      const { mail, pass } = user;
-      const userLogin = await User.findOne({ where: { mail } });
-      if (!userLogin) throw new Error("No pasas");
-      const comparePass = await userLogin.compare(pass);
-      // console.log(
-      //   `🚀 ~ UserService ~ loginService= ~ comparePass:`,
-      //   comparePass
-      // );
-      if (!comparePass) throw new Error("No pasas");
-      return userLogin;
+      const { email, password } = usuario;
+
+      const usuarioLogin = await Usuario.findOne({ where: { email } });
+      if (!usuarioLogin) throw new Error("Usuario no Existe");
+
+      const comparePass = await usuarioLogin.compare(password);
+      if (!comparePass) throw new Error("Email o Contraseña incorrectos");
+
+      const payLoad = {
+        id: usuarioLogin.id,
+        email: usuarioLogin.email,
+      };
+
+      const token = genToken(payLoad);
+      return token;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getMe = async (token) => {
+    try {
+      const verficado = verificarToken(token);
+      return verficado.data;
     } catch (error) {
       throw error;
     }

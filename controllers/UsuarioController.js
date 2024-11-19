@@ -37,8 +37,9 @@ class UsuarioController {
           success: false,
           message: "El correo electrónico ya está registrado.",
         });
+      } else {
+        res.status(400).send({ success: false, message: error.message });
       }
-      res.status(400).send({ success: false, message: error.message });
     }
   };
 
@@ -68,13 +69,28 @@ class UsuarioController {
     }
   };
 
-  login = async (req, res, next) => {
+  login = async (req, res) => {
     try {
-      const { mail, pass } = req.body;
-      const data = await this.userService.loginService({
-        mail,
-        pass,
+      const { email, password } = req.body;
+      const data = await this.usuarioService.loginService({
+        email,
+        password,
       });
+      console.log("🚀 ~ UsuarioController ~ login= ~ data:", data);
+
+      res.cookie("token", data);
+      res
+        .status(200)
+        .send({ success: true, message: "Usuario logueado con exito" });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+
+  getMe = async (req, res) => {
+    try {
+      const { token } = req.cookie;
+      const data = await this.usuarioService.getMe(token);
       res.status(200).send({ success: true, message: data });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });

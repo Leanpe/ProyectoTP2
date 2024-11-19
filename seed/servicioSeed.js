@@ -25,7 +25,7 @@ async function servicioSeed() {
       },
       {
         nombre: "Depilación",
-        descripcion: "Eliminación del vello con cera.",
+        descripcion: "Eliminación del bello con cera.",
         precio: 25.0,
       },
     ]);
