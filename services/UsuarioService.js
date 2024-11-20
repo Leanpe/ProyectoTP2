@@ -59,7 +59,6 @@ class UsuarioService {
         throw new Error("Usuario no encontrado");
       }
 
-      // Eliminar el usuario
       await Usuario.destroy({
         where: { id },
       });

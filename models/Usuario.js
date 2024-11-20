@@ -23,7 +23,7 @@ Usuario.init(
       validate: {
         isEmail: true,
         len: {
-          args: [15, 50], // Longitud mínima y máxima
+          args: [15, 50],
           msg: "El email debe tener entre 15 y 50 caracteres.",
         },
       },
@@ -34,7 +34,7 @@ Usuario.init(
       allowNull: false,
       validate: {
         len: {
-          args: [8, 50], // Longitud mínima y máxima
+          args: [8, 50],
           msg: "La contraseña debe tener entre 8 y 50 caracteres.",
         },
       },
@@ -47,10 +47,10 @@ Usuario.init(
     },
   },
   {
-    sequelize: connection, // La instancia de sequelize
+    sequelize: connection,
     modelName: "Usuario",
     tableName: "usuarios",
-    timestamps: true, // Incluye createdAt y updatedAt
+    timestamps: true,
   }
 );
 

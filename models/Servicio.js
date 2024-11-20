@@ -34,7 +34,7 @@ Servicio.init(
     sequelize: connection,
     modelName: "Servicio",
     tableName: "servicios",
-    timestamps: true, // createdAt y updatedAt
+    timestamps: true,
   }
 );
 

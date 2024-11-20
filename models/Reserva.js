@@ -36,7 +36,7 @@ Reserva.init(
     sequelize: connection,
     modelName: "Reserva",
     tableName: "reservas",
-    timestamps: true, // createdAt y updatedAt
+    timestamps: true,
   }
 );
 

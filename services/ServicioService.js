@@ -56,13 +56,11 @@ class ServicioService {
   // Eliminar un servicio
   deleteServicioService = async (id) => {
     try {
-      // Buscar el servicio para confirmar que existe
       const servicio = await Servicio.findByPk(id);
       if (!servicio) {
         throw new Error("Servicio no encontrado");
       }
 
-      // Eliminar el servicio
       await Servicio.destroy({
         where: { id },
       });

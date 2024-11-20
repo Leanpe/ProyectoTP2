@@ -4,9 +4,9 @@ async function reservaSeed() {
   try {
     await Reserva.bulkCreate([
       {
-        fecha: new Date(2024, 10, 20, 15, 0), // Ejemplo: 20 de noviembre de 2024 a las 15:00
-        usuarioId: 1, // Mismo usuarioId
-        servicioId: 1, // ID del servicio relacionado
+        fecha: new Date(2024, 10, 20, 15, 0),
+        usuarioId: 1,
+        servicioId: 1,
       },
       {
         fecha: new Date(2024, 10, 21, 10, 30),

@@ -66,13 +66,11 @@ class ReservaService {
   // Eliminar una reserva
   deleteReservaService = async (id) => {
     try {
-      // Buscar la reserva para confirmar que existe
       const reserva = await Reserva.findByPk(id);
       if (!reserva) {
         throw new Error("Reserva no encontrada");
       }
 
-      // Eliminar la reserva
       await Reserva.destroy({
         where: { id },
       });
@@ -88,7 +86,6 @@ class ReservaService {
       const usuarioExiste = await Usuario.findByPk(usuarioId);
       if (!usuarioExiste) throw new Error("Usuario no encontrado");
 
-      // Traer reservas asociadas al usuario
       const reservas = await Reserva.findAll({
         where: { usuarioId },
         attributes: ["fecha"],
@@ -108,11 +105,9 @@ class ReservaService {
   // Obtener reservas por servicioId
   getReservasByServicioId = async (servicioId) => {
     try {
-      // Validar si el servicio existe
       const servicioExiste = await Servicio.findByPk(servicioId);
       if (!servicioExiste) throw new Error("Servicio no encontrado");
 
-      // Traer reservas asociadas al servicio
       const reservas = await Reserva.findAll({
         where: { servicioId },
         attributes: ["fecha"],
