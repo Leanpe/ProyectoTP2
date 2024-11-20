@@ -22,12 +22,22 @@ Usuario.init(
       unique: true,
       validate: {
         isEmail: true,
+        len: {
+          args: [15, 50], // Longitud mínima y máxima
+          msg: "El email debe tener entre 15 y 50 caracteres.",
+        },
       },
     },
 
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: {
+          args: [8, 50], // Longitud mínima y máxima
+          msg: "La contraseña debe tener entre 8 y 50 caracteres.",
+        },
+      },
     },
 
     rol: {

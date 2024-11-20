@@ -1,13 +1,15 @@
 import { Reserva } from "../models/models.js";
+import { Usuario } from "../models/models.js";
+import { Servicio } from "../models/models.js";
 
 class ReservaService {
   // Obtener todas las reservas
   getAllReservasService = async () => {
     try {
       const reservas = await Reserva.findAll({
-        attributes: ["fecha", "usuarioId", "servicioId"],
+        attributes: ["fecha"],
         include: [
-          { model: Usuario, attributes: ["name", "mail"] }, // Incluir datos del usuario
+          { model: Usuario, attributes: ["nombre", "email"] }, // Incluir datos del usuario
           { model: Servicio, attributes: ["nombre", "descripcion", "precio"] }, // Incluir datos del servicio
         ],
       });
@@ -21,12 +23,13 @@ class ReservaService {
   getReservaByIdService = async (id) => {
     try {
       const reserva = await Reserva.findByPk(id, {
-        attributes: ["fecha", "usuarioId", "servicioId"],
+        attributes: ["fecha"],
         include: [
-          { model: Usuario, attributes: ["name", "mail"] }, // Incluir datos del usuario
+          { model: Usuario, attributes: ["nombre", "email"] }, // Incluir datos del usuario
           { model: Servicio, attributes: ["nombre", "descripcion", "precio"] }, // Incluir datos del servicio
         ],
       });
+      if (!reserva) throw Error("Reserva no Encontrada");
       return reserva;
     } catch (error) {
       throw error;
@@ -47,13 +50,14 @@ class ReservaService {
   updateReservaService = async (data) => {
     try {
       const { id, fecha, usuarioId, servicioId } = data;
-      const updatedReserva = await Reserva.update(
+      const [affectedRows] = await Reserva.update(
         { fecha, usuarioId, servicioId },
         {
           where: { id },
         }
       );
-      return updatedReserva;
+      if (affectedRows === 0) throw Error("Reserva no Encontrada");
+      return { message: "Reserva Actualizado" };
     } catch (error) {
       throw error;
     }
@@ -78,6 +82,49 @@ class ReservaService {
       throw error;
     }
   };
-}
 
+  getReservasByUsuarioId = async (usuarioId) => {
+    try {
+      const usuarioExiste = await Usuario.findByPk(usuarioId);
+      if (!usuarioExiste) throw new Error("Usuario no encontrado");
+
+      // Traer reservas asociadas al usuario
+      const reservas = await Reserva.findAll({
+        where: { usuarioId },
+        attributes: ["fecha"],
+        include: [
+          { model: Servicio, attributes: ["nombre", "descripcion", "precio"] },
+        ],
+      });
+
+      if (reservas.length === 0)
+        throw new Error("No se encontraron reservas para este usuario");
+      return reservas;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // Obtener reservas por servicioId
+  getReservasByServicioId = async (servicioId) => {
+    try {
+      // Validar si el servicio existe
+      const servicioExiste = await Servicio.findByPk(servicioId);
+      if (!servicioExiste) throw new Error("Servicio no encontrado");
+
+      // Traer reservas asociadas al servicio
+      const reservas = await Reserva.findAll({
+        where: { servicioId },
+        attributes: ["fecha"],
+        include: [{ model: Usuario, attributes: ["nombre", "email"] }],
+      });
+
+      if (reservas.length === 0)
+        throw new Error("No se encontraron reservas para este servicio");
+      return reservas;
+    } catch (error) {
+      throw error;
+    }
+  };
+}
 export default ReservaService;

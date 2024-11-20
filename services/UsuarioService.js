@@ -19,6 +19,7 @@ class UsuarioService {
         where: { id },
         attributes: ["nombre", "email"],
       });
+      if (usuarios.length == 0) throw Error("Usuario no Encontrado");
       return usuarios;
     } catch (error) {
       throw error;
@@ -37,13 +38,14 @@ class UsuarioService {
   updateUsuarioService = async (data) => {
     try {
       const { id, nombre, password, email } = data;
-      const usuarios = await Usuario.update(
+      const [affectedRows] = await Usuario.update(
         { nombre, password, email },
         {
           where: { id },
         }
       );
-      return usuarios;
+      if (affectedRows === 0) throw Error("Usuario no Encontrado");
+      return { message: "Usuario Actualizado" };
     } catch (error) {
       throw error;
     }

@@ -14,7 +14,7 @@ Reserva.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "usuarios", // Nombre de la tabla de Usuarios
+        model: "usuarios",
         key: "id",
       },
       onUpdate: "CASCADE",
@@ -25,7 +25,7 @@ Reserva.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "servicios", // Nombre de la tabla de Servicios
+        model: "servicios",
         key: "id",
       },
       onUpdate: "CASCADE",

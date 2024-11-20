@@ -19,6 +19,7 @@ class ServicioService {
       const servicio = await Servicio.findByPk(id, {
         attributes: ["nombre", "descripcion", "precio"],
       });
+      if (!servicio) throw Error("Servicio no Encontrado");
       return servicio;
     } catch (error) {
       throw error;
@@ -39,13 +40,14 @@ class ServicioService {
   updateServicioService = async (data) => {
     try {
       const { id, nombre, descripcion, precio } = data;
-      const updatedServicio = await Servicio.update(
+      const [affectedRows] = await Servicio.update(
         { nombre, descripcion, precio },
         {
           where: { id },
         }
       );
-      return updatedServicio;
+      if (affectedRows === 0) throw Error("Servicio no Encontrado");
+      return { message: "Servicio Actualizado" };
     } catch (error) {
       throw error;
     }

@@ -66,6 +66,30 @@ class ReservaController {
       res.status(400).send({ success: false, message: error.message });
     }
   };
+
+  // Obtener todas las reservas por usuarioId
+  getReservasByUsuarioId = async (req, res) => {
+    try {
+      const { usuarioId } = req.params;
+      const data = await this.reservaService.getReservasByUsuarioId(usuarioId);
+      res.status(200).send({ success: true, message: data });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
+
+  // Obtener todas las reservas por servicioId
+  getReservasByServicioId = async (req, res) => {
+    try {
+      const { servicioId } = req.params;
+      const data = await this.reservaService.getReservasByServicioId(
+        servicioId
+      );
+      res.status(200).send({ success: true, message: data });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
+  };
 }
 
 export default ReservaController;
